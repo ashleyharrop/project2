@@ -1,6 +1,7 @@
 let canvas;
 let painter;
 let isDragging = false;
+let paintStroke = [];
 
 function setup() {
    createCanvas(700,700);
@@ -13,6 +14,16 @@ function setup() {
 
 function draw() {
    background("#DBF4AD");
+
+   stroke(255);
+   strokeWeight(7);
+   noFill ();
+
+   beginShape();
+   for (let i = 0; i< paintStroke.length; i++) {
+      vertex(paintStroke[i].x, paintStroke[i].y);
+   }
+   endShape();
 
    if (
       mouseX > painter.position.x - painter.width / 2 &&
@@ -30,6 +41,9 @@ function draw() {
     if (isDragging) {
       painter.position.x = mouseX;
       painter.position.y = mouseY;
+
+      paintStroke.push(createVector(painter.position.x, painter.position.y));
+
     }
 
 }
@@ -43,6 +57,10 @@ function mousePressed() {
      mouseY < painter.position.y + painter.height / 2
    ) {
      isDragging = true;
+     
+      paintStroke = [];
+      paintStroke.push(createVector(painter.position.x, painter.position.y));
+
    }
  }
 
